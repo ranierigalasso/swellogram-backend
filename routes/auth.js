@@ -40,7 +40,6 @@ router.post('/login', (req, res, next) => {
           error: 'not-found'
         });
       }
-      // TODO async bcrypt
       if (bcrypt.compareSync(password, user.password)) {
         req.session.currentUser = user;
         return res.status(200).json(user);
@@ -51,7 +50,6 @@ router.post('/login', (req, res, next) => {
     })
     .catch(next);
 });
-
 
 router.post('/signup', (req, res, next) => {
   const {
@@ -92,7 +90,7 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.post('/logout', (req, res) => {
-  req.session.currentUser = null;
+  req.session.destroy()
   return res.status(204).send();
 });
 
