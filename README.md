@@ -1,8 +1,5 @@
 # Auth backend server
 
-
-💣💣💣💣 rename the file `.env.sample` to `.env` and spicify your database name; 💣💣💣💣
-
 ## Routes
 
 | Method | Path | Description |
