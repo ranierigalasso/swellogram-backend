@@ -4,14 +4,10 @@ const router = express.Router();
 const User = require('../models/user');
 const Post = require('../models/post');
 
-/* GET Profile */
+/* GET My Profile */
 
-router.get('/', (req, res, next) => {
+router.get('/me', (req, res, next) => {
   let userId = req.session.currentUser._id;
-
-  // db.posts.find({creatorId: ObjectId("5c76782dbc407f7794a22d03")}).pretty()
-
-
   Post.find({creatorId:userId})
     .then((postList) => {
       res.status(200);
@@ -19,5 +15,23 @@ router.get('/', (req, res, next) => {
     })
     .catch(next)
 })
+
+/* GET Profiles of Users */
+
+router.get('/:id', (req, res, next) => {
+  const { id } = req.params;
+  User.findById(id)
+    .then((user)=>{
+      Post.find({ creatorId: user._id })
+        .then((postList) => {
+          let data = [ postList, user ];
+          res.status(200);
+          res.json(data);
+        })
+        .catch(next)
+    })
+    .catch(next);
+})
+
 
 module.exports = router;
