@@ -16,9 +16,13 @@ const userSchema = new Schema({
     type: ObjectId,
     reference: 'User',
   }],
+  profileStatus: {
+    type: String,
+    default: 'Busy surfing my way through life...'
+  },
   profileImg: {
     type: String,
-    default: 'https://i.imgur.com/gtWsPu9.jpg',
+    default: 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png',
   }
 });
 

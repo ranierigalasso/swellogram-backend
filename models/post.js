@@ -19,10 +19,8 @@ const postSchema = new Schema({
     type: String,
     required: true,
   },
-  // timestamps: {
-  //   createdAt: 'created_at',
-  //   updatedAt: 'updated_at'
-  // },
+},{
+  timestamps:true
 });
 
 const Post = mongoose.model('Post', postSchema);

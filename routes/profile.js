@@ -39,8 +39,9 @@ router.post('/:id/follow', (req, res, next) => {
   const { loggedUsername } = req.body;
   const { id } = req.params;
   User.findOneAndUpdate({username:loggedUsername},{$push:{following:id}},{new:true})
-    .then((data) => {
-      res.json(data).status(200);
+    .then((user) => {
+      req.session.currentUser = user;
+      res.json(user).status(200);
     })
     .catch(next)
 })
@@ -52,6 +53,7 @@ router.post('/:id/unfollow', (req, res, next) => {
   const { id } = req.params;
   User.findOneAndUpdate({username:loggedUsername},{$pull:{following:id}},{new:true})
     .then((data) => {
+      req.session.currentUser = data;
       res.json(data).status(200);
     })
     .catch(next)
