@@ -33,5 +33,28 @@ router.get('/:id', (req, res, next) => {
     .catch(next);
 })
 
+/* POST Follow Users */
+
+router.post('/:id/follow', (req, res, next) => {
+  const { loggedUsername } = req.body;
+  const { id } = req.params;
+  User.findOneAndUpdate({username:loggedUsername},{$push:{following:id}},{new:true})
+    .then((data) => {
+      res.json(data).status(200);
+    })
+    .catch(next)
+})
+
+/* POST Unfollow Users */
+
+router.post('/:id/unfollow', (req, res, next) => {
+  const { loggedUsername } = req.body;
+  const { id } = req.params;
+  User.findOneAndUpdate({username:loggedUsername},{$pull:{following:id}},{new:true})
+    .then((data) => {
+      res.json(data).status(200);
+    })
+    .catch(next)
+})
 
 module.exports = router;

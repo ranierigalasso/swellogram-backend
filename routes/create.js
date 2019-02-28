@@ -15,7 +15,9 @@ router.post('/', (req, res, next) => {
     description,
   }
   Post.create(post)
-    .then()
+    .then((data) => {
+    res.json(data).status(200);
+    })
     .catch(next)
 })
 

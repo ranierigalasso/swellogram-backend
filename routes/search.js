@@ -6,9 +6,9 @@ const User = require('../models/user');
 /* GET User List */
 
 router.get('/', (req, res, next) => {
-  User.find({})
+  let loggedUserId = req.session.currentUser.username;
+  User.find({username:{$ne: loggedUserId}})
   .then((userList)=>{
-    console.log(userList);
     res.status(200);
     res.json(userList);
   })
