@@ -16,6 +16,7 @@ const feed = require('./routes/feed');
 const profile = require('./routes/profile');
 const search = require('./routes/search');
 const post = require('./routes/post');
+const settings = require('./routes/settings');
 
 mongoose.connect(process.env.MONGODB_URI, {
   keepAlive: true,
@@ -67,6 +68,8 @@ app.use('/feed', feed);
 app.use('/profile', profile);
 app.use('/search', search);
 app.use('/post', post);
+app.use('/settings', settings);
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
