@@ -17,7 +17,11 @@ router.get('/', (req, res, next) => {
     })
     Post.aggregate([{$match: {creatorId: {$in: userFeedIds}}}]).sort({createdAt: -1})
     .then((data) => {
-      res.json(data).status(200)
+      User.populate(data, {path:'creatorId'})
+        .then((data) => {
+          res.json(data).status(200)
+        })
+        .catch(next)
     })
     .catch(next)
   })

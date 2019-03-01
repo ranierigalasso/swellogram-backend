@@ -9,6 +9,7 @@ const Post = require('../models/post');
 router.get('/:id', (req, res, next) => {
   const { id } = req.params;
   Post.findById(id)
+  .populate('creatorId')
     .then((post) => {
       res.status(200);
       res.json(post);
