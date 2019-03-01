@@ -8,12 +8,29 @@ const Post = require('../models/post');
 
 router.get('/me', (req, res, next) => {
   let userId = req.session.currentUser._id;
-  Post.find({creatorId:userId})
+  Post.find({creatorId:userId}).sort({createdAt: -1})
     .then((postList) => {
       res.status(200);
       res.json(postList);
     })
     .catch(next)
+})
+
+/* DELETE My Profile and my Posts */
+
+router.delete('/me', (req, res, next) => {
+  let userId = req.session.currentUser._id;
+  Post.remove({creatorId: userId})
+    .then(() => {
+      User.findByIdAndDelete(userId)
+        .then((response) => {
+          req.session.currentUser = null;
+          res.status(200);
+          res.json(response);
+        })
+        .catch(next)
+    })
+    .catch(next);
 })
 
 /* GET Profiles of Users */
@@ -22,7 +39,7 @@ router.get('/:id', (req, res, next) => {
   const { id } = req.params;
   User.findById(id)
     .then((user)=>{
-      Post.find({ creatorId: user._id })
+      Post.find({ creatorId: user._id }).sort({createdAt: -1})
         .then((postList) => {
           let data = [ postList, user ];
           res.status(200);
