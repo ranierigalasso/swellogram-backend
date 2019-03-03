@@ -3,7 +3,7 @@ const router = express.Router();
 
 const Post = require('../models/post');
 
-/* POST create */
+/* POST create post */
 
 router.post('/', (req, res, next) => {
   const { location, imageUrl, description} = req.body;
