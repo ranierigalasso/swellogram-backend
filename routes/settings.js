@@ -17,4 +17,17 @@ router.put('/', (req, res, next) => {
   })
   .catch(next);
 })
+/*POST Change profile pic */
+router.post('/picture', (req,res,next) => {
+  console.log(req.body);
+  const{ id, url} = req.body.data;
+  User.findByIdAndUpdate({_id:id},{profileImg:url},{new:true})
+    .then((response) => {
+      req.session.currentUser = response;
+      res.status(200);
+      res.json(response);
+    })
+    .catch(next)
+})
+
 module.exports = router;

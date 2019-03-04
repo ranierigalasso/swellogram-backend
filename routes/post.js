@@ -111,9 +111,7 @@ router.post('/:id/comment/delete', (req, res, next) => {
 
 /*POST Add a like */
 
-
-
-router.post('/:id/comment/like', (req, res, next) => {
+router.post('/:id/like', (req, res, next) => {
   const { id } = req.params;
   const { userId } = req.body;
   Post.findById({_id:id})
@@ -143,6 +141,19 @@ router.post('/:id/comment/like', (req, res, next) => {
       }
     })
     .catch(next)
+})
+
+/* GET Likes of a Post */
+
+router.get('/:id/like', (req, res, next) => {
+  const { id } = req.params;
+  Post.findById(id)
+    .then((post) => {
+      // console.log(post)
+      res.status(200);
+      res.json(post);
+    })
+    .catch(next);
 })
 
 module.exports = router;
