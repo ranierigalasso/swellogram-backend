@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const isLoggedIn = require('../helpers/middlewares')
 
 const User = require('../models/user');
 const Post = require('../models/post');
 
 /* GET My Profile */
 
-router.get('/me', (req, res, next) => {
+router.get('/me', isLoggedIn(), (req, res, next) => {
   let userId = req.session.currentUser._id;
   Post.find({creatorId:userId}).sort({createdAt: -1})
     .then((postList) => {
@@ -18,7 +19,7 @@ router.get('/me', (req, res, next) => {
 
 /* DELETE My Profile and my Posts */
 
-router.delete('/me', (req, res, next) => {
+router.delete('/me', isLoggedIn(), (req, res, next) => {
   let userId = req.session.currentUser._id;
   Post.remove({creatorId: userId})
     .then(() => {
@@ -35,7 +36,7 @@ router.delete('/me', (req, res, next) => {
 
 /* GET Profiles of Users */
 
-router.get('/:id', (req, res, next) => {
+router.get('/:id', isLoggedIn(), (req, res, next) => {
   const { id } = req.params;
   User.findById(id)
     .then((user)=>{
@@ -52,7 +53,7 @@ router.get('/:id', (req, res, next) => {
 
 /* POST Follow Users */
 
-router.post('/:id/follow', (req, res, next) => {
+router.post('/:id/follow', isLoggedIn(), (req, res, next) => {
   const { loggedUsername } = req.body;
   const { id } = req.params;
   User.findOneAndUpdate({username:loggedUsername},{$push:{following:id}},{new:true})
@@ -65,7 +66,7 @@ router.post('/:id/follow', (req, res, next) => {
 
 /* POST Unfollow Users */
 
-router.post('/:id/unfollow', (req, res, next) => {
+router.post('/:id/unfollow', isLoggedIn(), (req, res, next) => {
   const { loggedUsername } = req.body;
   const { id } = req.params;
   User.findOneAndUpdate({username:loggedUsername},{$pull:{following:id}},{new:true})

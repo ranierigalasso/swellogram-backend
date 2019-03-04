@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const isLoggedIn = require('../helpers/middlewares')
 
 const User = require('../models/user');
 const Post = require('../models/post');
 
 /*PUT Update Status */
 
-router.put('/', (req, res, next) => {
+router.put('/', isLoggedIn(), (req, res, next) => {
   let { _id } = req.session.currentUser;
   let { status } = req.body;
   User.findByIdAndUpdate({_id},{profileStatus:status},{new:true})
@@ -18,7 +19,7 @@ router.put('/', (req, res, next) => {
   .catch(next);
 })
 /*POST Change profile pic */
-router.post('/picture', (req,res,next) => {
+router.post('/picture', isLoggedIn(),(req,res,next) => {
   console.log(req.body);
   const{ id, url} = req.body.data;
   User.findByIdAndUpdate({_id:id},{profileImg:url},{new:true})

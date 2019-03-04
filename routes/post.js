@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const isLoggedIn = require('../helpers/middlewares')
 
 const User = require('../models/user');
 const Post = require('../models/post');
@@ -7,7 +8,7 @@ const Comment = require('../models/comment');
 
 /* GET Post by ID */
 
-router.get('/:id', (req, res, next) => {
+router.get('/:id', isLoggedIn(), (req, res, next) => {
   const { id } = req.params;
   Post.findById(id)
   .populate('creatorId')
@@ -20,7 +21,7 @@ router.get('/:id', (req, res, next) => {
 
 /* POST delete by ID */
 
-router.post('/:id', (req, res, next) => {
+router.post('/:id',isLoggedIn(), (req, res, next) => {
   const { id } = req.params;
   Post.findByIdAndDelete(id)
     .then((post) => {
@@ -32,7 +33,7 @@ router.post('/:id', (req, res, next) => {
 
 /* GET Post by ID in Edit */
 
-router.get('/:id/edit', (req, res, next) => {
+router.get('/:id/edit', isLoggedIn(),(req, res, next) => {
   const { id } = req.params;
   Post.findById(id)
     .then((post) => {
@@ -45,7 +46,7 @@ router.get('/:id/edit', (req, res, next) => {
 
 /* POST edit by ID */
 
-router.put('/:id/edit', (req, res, next) => {
+router.put('/:id/edit', isLoggedIn(), (req, res, next) => {
   const { id } = req.params;
   const { location, imageUrl, description} = req.body;
   const post = {
@@ -63,7 +64,7 @@ router.put('/:id/edit', (req, res, next) => {
 
 /*POST create new comment */
 
-router.post('/:id/comment', (req, res, next) => {
+router.post('/:id/comment', isLoggedIn(), (req, res, next) => {
   const { userId, comment} = req.body.data;
   const { id }= req.params;
   const data ={
@@ -82,7 +83,7 @@ router.post('/:id/comment', (req, res, next) => {
 
 /* GET Get comments by post ID */
 
-router.get('/:id/comment', (req, res, next) => {
+router.get('/:id/comment', isLoggedIn(), (req, res, next) => {
   const { id } = req.params;
   Comment.find({postId:id})
   .populate('creatorId')
@@ -96,7 +97,7 @@ router.get('/:id/comment', (req, res, next) => {
 
 /* DELETE Delete comment  by comment ID*/
 
-router.post('/:id/comment/delete', (req, res, next) => {
+router.post('/:id/comment/delete',isLoggedIn(), (req, res, next) => {
   const { id } = req.params;
   const { commentId } = req.body;
   console.log(req.body)
@@ -111,7 +112,7 @@ router.post('/:id/comment/delete', (req, res, next) => {
 
 /*POST Add a like */
 
-router.post('/:id/like', (req, res, next) => {
+router.post('/:id/like', isLoggedIn(), (req, res, next) => {
   const { id } = req.params;
   const { userId } = req.body;
   Post.findById({_id:id})
@@ -145,7 +146,7 @@ router.post('/:id/like', (req, res, next) => {
 
 /* GET Likes of a Post */
 
-router.get('/:id/like', (req, res, next) => {
+router.get('/:id/like', isLoggedIn(),(req, res, next) => {
   const { id } = req.params;
   Post.findById(id)
     .then((post) => {

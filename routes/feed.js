@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-
+const isLoggedIn = require('../helpers/middlewares')
 const User = require('../models/user');
 const Post = require('../models/post');
 
 /* GET feed */
 
-router.get('/', (req, res, next) => {
+router.get('/', isLoggedIn(), (req, res, next) => {
   const { username } = req.session.currentUser;
   const userFeedIds = [];
   User.find({username})

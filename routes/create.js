@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const isLoggedIn = require('../helpers/middlewares')
 
 const Post = require('../models/post');
 
 /* POST create post */
 
-router.post('/', (req, res, next) => {
+router.post('/',isLoggedIn(), (req, res, next) => {
   const { location, imageUrl, description} = req.body;
   const creatorId = req.session.currentUser._id;
   const post = {
