@@ -49,6 +49,7 @@ router.get('/:id/edit', isLoggedIn(),(req, res, next) => {
 router.put('/:id/edit', isLoggedIn(), (req, res, next) => {
   const { id } = req.params;
   const { location, imageUrl, description} = req.body;
+  console.log(imageUrl)
   const post = {
     location,
     imageUrl,
