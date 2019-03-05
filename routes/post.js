@@ -86,7 +86,7 @@ router.post('/:id/comment', isLoggedIn(), (req, res, next) => {
 
 router.get('/:id/comment', isLoggedIn(), (req, res, next) => {
   const { id } = req.params;
-  Comment.find({postId:id})
+  Comment.find({postId:id}).sort({createdAt: -1})
   .populate('creatorId')
     .then((comments) => {
       // console.log(comments)
