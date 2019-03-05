@@ -23,6 +23,12 @@ const postSchema = new Schema({
     type: String,
     required: true,
   }],
+  coords: {
+    type: {
+      type: String,
+    },
+    coordinates: [Number],
+  },
   likes: {
     type: Number,
     default: 0,
