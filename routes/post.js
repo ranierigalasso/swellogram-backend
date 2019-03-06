@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const {isLoggedIn} = require('../helpers/middlewares')
 
-const User = require('../models/user');
 const Post = require('../models/post');
 const Comment = require('../models/comment');
 
@@ -37,7 +36,6 @@ router.get('/:id/edit', isLoggedIn(),(req, res, next) => {
   const { id } = req.params;
   Post.findById(id)
     .then((post) => {
-      console.log(post)
       res.status(200);
       res.json(post);
     })
@@ -49,7 +47,6 @@ router.get('/:id/edit', isLoggedIn(),(req, res, next) => {
 router.put('/:id/edit', isLoggedIn(), (req, res, next) => {
   const { id } = req.params;
   const { location, imageUrl, description} = req.body;
-  console.log(imageUrl)
   const post = {
     location,
     imageUrl,
@@ -100,10 +97,8 @@ router.get('/:id/comment', isLoggedIn(), (req, res, next) => {
 router.post('/:id/comment/delete',isLoggedIn(), (req, res, next) => {
   const { id } = req.params;
   const { commentId } = req.body;
-  console.log(req.body)
   Comment.findByIdAndDelete({_id:commentId})
     .then((response) => {
-      console.log(response)
       res.status(200);
       res.json(response);
     })
@@ -150,7 +145,6 @@ router.get('/:id/like', isLoggedIn(),(req, res, next) => {
   const { id } = req.params;
   Post.findById(id)
     .then((post) => {
-      // console.log(post)
       res.status(200);
       res.json(post);
     })

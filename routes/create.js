@@ -8,11 +8,9 @@ const Post = require('../models/post');
 
 router.post('/',isLoggedIn(), (req, res, next) => {
   const { location, imageUrl, description, lat, long} = req.body;
-
   const coords = [];
   coords.push(long);
   coords.push(lat);
-
   const creatorId = req.session.currentUser._id;
   const post = {
     creatorId,
